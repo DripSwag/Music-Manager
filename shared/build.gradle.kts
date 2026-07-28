@@ -22,6 +22,12 @@ kotlin {
             implementation(libs.exposed.jdbc)
             implementation(libs.h2)
             implementation("org.xerial:sqlite-jdbc:3.50.2.0")
+
+            implementation("io.github.vinceglb:filekit-core:0.14.2")
+            implementation("io.github.vinceglb:filekit-dialogs:0.14.2")
+            implementation("io.github.vinceglb:filekit-dialogs-compose:0.14.2")
+            implementation("io.github.vinceglb:filekit-coil:0.14.2")
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

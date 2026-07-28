@@ -19,11 +19,21 @@ import org.jetbrains.compose.resources.painterResource
 import musicmanager.shared.generated.resources.Res
 import musicmanager.shared.generated.resources.compose_multiplatform
 
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
+
 @Composable
 @Preview
 fun App() {
     Connection().connect()
-    Connection().something()
+
+    FileKit.init(appId = "music.manager")
+
+    val launcher = rememberDirectoryPickerLauncher {
+        directory ->
+        println(directory)
+    }
+
 
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
@@ -36,6 +46,9 @@ fun App() {
         ) {
             Button(onClick = { showContent = !showContent }) {
                 Text("Click me!")
+            }
+            Button(onClick = { launcher.launch() }){
+                Text("File")
             }
             AnimatedVisibility(showContent) {
                 val greeting = remember { Greeting().greet() }
