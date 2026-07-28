@@ -22,6 +22,9 @@ import musicmanager.shared.generated.resources.compose_multiplatform
 @Composable
 @Preview
 fun App() {
+    Connection().connect()
+    Connection().something()
+
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
