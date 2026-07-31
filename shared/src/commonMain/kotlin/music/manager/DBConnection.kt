@@ -1,30 +1,22 @@
 package music.manager
 
+import musicmanager.shared.generated.resources.Res
 import org.jetbrains.exposed.v1.core.*
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.jetbrains.exposed.v1.jdbc.insert
 
-object Songs : Table("songs") {
-    val id = integer("id").autoIncrement()
+const val SOURCE_SONG_NAME_MAX_LENGTH = 512
 
-    override val primaryKey = PrimaryKey(id)
+object Songs : Table("songs") {
+    val sourceSongName = varchar("source_song_name", length = SOURCE_SONG_NAME_MAX_LENGTH)
+
+    override val primaryKey = PrimaryKey(sourceSongName)
 }
 
 class Connection {
     fun connect() {
         Database.connect("jdbc:sqlite:data", driver = "org.sqlite.JDBC")
-    }
-
-    fun something() {
-        var id: Int = 0
-
-        transaction {
-            SchemaUtils.create(Songs)
-
-            id = Songs.insert {} get Songs.id
-        }
-        System.out.println(id)
     }
 }
