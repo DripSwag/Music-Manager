@@ -1,18 +1,26 @@
 package music.manager.lib
 
+import music.manager.classes.Song
+import music.manager.database.tables.SongTable
 import org.farng.mp3.MP3File
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.exists
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import java.io.File
 
-class SongSourceReader {
-    companion object {
-        fun readAllSourceSongs(directory: File): List<String> {
-            for (file: File in directory.listFiles()) {
-                handleExtension(file)
-            }
-            return ArrayList<String>()
-        }
+fun readAllSourceSongs(directory: File): ArrayList<Song> {
+    val songs = ArrayList<Song>()
+
+    for (file: File in directory.listFiles()) {
+        // TODO: Add file reading for genre, artist, etc.
+        val song = Song(file.name, file.nameWithoutExtension)
+        songs.add(song)
     }
+
+    return songs
 }
+
 
 fun handleExtension(file: File) {
     if (file.extension == "mp3") {

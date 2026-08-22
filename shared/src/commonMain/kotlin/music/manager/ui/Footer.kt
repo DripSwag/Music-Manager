@@ -8,7 +8,10 @@ import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.absolutePath
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
 import io.github.vinceglb.filekit.path
-import music.manager.lib.SongSourceReader
+import music.manager.ui.btn.ExportSongsBTN
+import music.manager.ui.btn.RefreshSongsBTN
+import music.manager.ui.btn.SelectSongsOutputBTN
+import music.manager.ui.btn.SelectSongsSourceBTN
 import java.io.File
 
 /**
@@ -17,24 +20,8 @@ import java.io.File
 @Composable
 @Preview
 fun Footer() {
-    var songSourceDirectory: File? = null
-
-    val launcher = rememberDirectoryPickerLauncher { file ->
-        songSourceDirectory = file?.file
-    }
-
-    Button(
-        onClick = { launcher.launch() }
-    ) {
-        Text("Pick Source Directory")
-    }
-
-    Button(onClick = { handleRefreshClick(songSourceDirectory) }
-    ) { Text("Refresh") }
-}
-
-fun handleRefreshClick(songSourceDirectory: File?) {
-    if (songSourceDirectory != null) {
-        SongSourceReader.readAllSourceSongs(songSourceDirectory)
-    }
+    SelectSongsSourceBTN()
+    RefreshSongsBTN()
+    SelectSongsOutputBTN()
+    ExportSongsBTN()
 }
