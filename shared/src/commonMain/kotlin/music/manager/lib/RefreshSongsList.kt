@@ -1,7 +1,9 @@
 package music.manager.lib
 
 import androidx.compose.runtime.Composable
+import io.github.vinceglb.filekit.PlatformFile
 import music.manager.classes.Song
+import music.manager.database.addDBSong
 import music.manager.database.tables.SongTable
 import music.manager.viewmodels.SongsViewModel
 import org.jetbrains.exposed.v1.core.eq
@@ -14,13 +16,14 @@ import java.io.File
 fun getSongsData(): ArrayList<Song> {
     val songsSourceDirectory = File(PropertyHelpers.readProperty("songsSourceDirectory"))
 
-    val sourceSongs = readAllSourceSongs(songsSourceDirectory)
+    if (songsSourceDirectory.isDirectory()) {
+        val sourceSongs = readAllSourceSongs(songsSourceDirectory)
 
-    checkSongsWithDatabase(sourceSongs)
+        checkSongsWithDatabase(sourceSongs)
 
-    // TODO: Need to check songs that have been deleted from source and delete from DB
-
-    return sourceSongs
+        return sourceSongs
+    }
+    return ArrayList()
 }
 
 fun checkSongsWithDatabase(sourceSongs: List<Song>) {
@@ -28,7 +31,7 @@ fun checkSongsWithDatabase(sourceSongs: List<Song>) {
         if (sourceSongExists(song.sourceSongName)) {
             getExistingSongData(song)
         } else {
-            addSong(song.sourceSongName, song.songName)
+            addDBSong(song)
         }
     }
 }
@@ -41,18 +44,16 @@ fun getExistingSongData(song: Song) {
                 song.songName = it[SongTable.songName]
                 song.genre = it[SongTable.genre]
                 song.album = it[SongTable.album]
+                song.artist = it[SongTable.artist]
+                if (it[SongTable.coverArt] == null) {
+                    song.coverArt = null
+                } else {
+                    song.coverArt = PlatformFile(it[SongTable.coverArt]!!)
+                }
             }
     }
 }
 
-fun addSong(sourceSongName: String, songName: String) {
-    transaction {
-        SongTable.insert {
-            it[this.sourceSongName] = sourceSongName
-            it[this.songName] = songName
-        }
-    }
-}
 
 fun sourceSongExists(songName: String): Boolean {
     val count = transaction {
@@ -62,24 +63,4 @@ fun sourceSongExists(songName: String): Boolean {
     }
 
     return count > 0
-}
-
-fun loadSongsFromDatabase(): ArrayList<Song> {
-    val result = ArrayList<Song>()
-
-    transaction {
-        SongTable.selectAll().forEach {
-            result.add(
-                Song(
-                    it[SongTable.sourceSongName],
-                    it[SongTable.songName],
-                    it[SongTable.genre],
-                    it[SongTable.artist],
-                    it[SongTable.album]
-                )
-            )
-        }
-    }
-
-    return result
 }

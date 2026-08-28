@@ -9,17 +9,19 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import music.manager.enum.SongProperties
 import music.manager.lib.exportSongs
+import music.manager.viewmodels.SettingsViewModel
 import music.manager.viewmodels.SongsViewModel
 import java.util.LinkedList
 
 @Composable
-fun ExportSongsBTN(songsViewModel: SongsViewModel = viewModel { SongsViewModel() }) {
+fun ExportSongsBTN(
+    songsViewModel: SongsViewModel = viewModel { SongsViewModel() },
+    settingsViewModel: SettingsViewModel = viewModel { SettingsViewModel() }
+) {
     val uiState by songsViewModel.uiState.collectAsState()
+    val settingsState by settingsViewModel.settingsState.collectAsState()
 
-    val songProperties = LinkedList<SongProperties>()
-    songProperties.add(SongProperties.GENRE)
-
-    Button(onClick = { exportSongs(uiState.songs, songProperties) }) {
+    Button(onClick = { exportSongs(uiState.songs, settingsState.properties) }) {
         Text("Export")
     }
 }

@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import music.manager.classes.Song
 import music.manager.database.tables.SongTable
-import music.manager.database.updateSong
-import music.manager.lib.loadSongsFromDatabase
+import music.manager.database.updateDBSong
+import music.manager.lib.getSongsData
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.update
 
 data class SongsState(
-    val songs: ArrayList<Song> = loadSongsFromDatabase(),
+    val songs: ArrayList<Song> = getSongsData(),
     var editingSongIndex: Int = -1,
     var editing: Boolean = false
 )
@@ -36,12 +36,11 @@ class SongsViewModel : ViewModel() {
     // Need to create a new copy of Songs list and the modified song to cause rehydration
     fun editSong(editSong: (Song) -> Unit): ArrayList<Song> {
         val value = uiState.value
-        val song = value.songs[value.editingSongIndex]
 
-        val songCopy = Song(song.sourceSongName, song.songName, song.genre, song.artist, song.album)
+        val songCopy = value.songs[value.editingSongIndex].copy()
         editSong(songCopy)
 
-        updateSong(songCopy)
+        updateDBSong(songCopy)
 
         val newList = ArrayList<Song>()
         for (index in uiState.value.songs.indices) {

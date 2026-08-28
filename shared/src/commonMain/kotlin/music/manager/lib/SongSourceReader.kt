@@ -1,8 +1,11 @@
 package music.manager.lib
 
+import kotlinx.io.files.Path
 import music.manager.classes.Song
 import music.manager.database.tables.SongTable
-import org.farng.mp3.MP3File
+import org.jaudiotagger.kt.AudioTagger
+import org.jaudiotagger.kt.tag.FieldKey
+import org.jaudiotagger.kt.tag.Tag
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.exists
 import org.jetbrains.exposed.v1.jdbc.select
@@ -13,25 +16,40 @@ fun readAllSourceSongs(directory: File): ArrayList<Song> {
     val songs = ArrayList<Song>()
 
     for (file: File in directory.listFiles()) {
-        // TODO: Add file reading for genre, artist, etc.
-        val song = Song(file.name, file.nameWithoutExtension)
+        val audioFile = AudioTagger.read(Path(file.path))
+        val tag = audioFile.tag
+
+        val song = Song(
+            file.name,
+            file.nameWithoutExtension,
+            readTagProperty(FieldKey.GENRE, tag),
+            readTagProperty(FieldKey.ARTIST, tag),
+            readTagProperty(FieldKey.ALBUM, tag)
+        )
+
         songs.add(song)
     }
 
     return songs
 }
 
+fun readTagProperty(fieldKey: FieldKey, tag: Tag): String {
+    return tag.first(fieldKey) ?: ""
+}
 
-fun handleExtension(file: File) {
-    if (file.extension == "mp3") {
-        handleMP3(file)
+fun extractArtistFromFileName(song: Song, file: File) {
+    val parsedSongName = parseFileName(file.nameWithoutExtension)
+
+    if (parsedSongName != null) {
+        song.songName = parsedSongName.second
+        song.artist = parsedSongName.first
     }
 }
 
-fun handleMP3(file: File) {
-    val mp3File = MP3File(file)
-    if (mp3File.hasID3v2Tag()) {
-        val tag = mp3File.iD3v2Tag
-        println(tag.leadArtist)
+fun parseFileName(fileName: String): Pair<String, String>? {
+    val list = fileName.split(" - ", limit = 2)
+    if (list.size == 2) {
+        return Pair(list[0], list[1])
     }
+    return null
 }

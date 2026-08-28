@@ -1,11 +1,28 @@
 package music.manager.ui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import music.manager.classes.Song
+import music.manager.ui.btn.SongCoverArtBTN
 import music.manager.viewmodels.SongsViewModel
 
 @Composable
@@ -13,10 +30,36 @@ fun SongDetail(songsViewModel: SongsViewModel = viewModel { SongsViewModel() }) 
     val uiState by songsViewModel.uiState.collectAsState()
     val song = uiState.songs[uiState.editingSongIndex]
 
-    Card {
-        EditModalTextField(song.songName) { newValue -> songsViewModel.editSong { it.songName = newValue } }
-        EditModalTextField(song.artist) { newValue -> songsViewModel.editSong { it.artist = newValue } }
-        EditModalTextField(song.genre) { newValue -> songsViewModel.editSong { it.genre = newValue } }
-        EditModalTextField(song.album) { newValue -> songsViewModel.editSong { it.album = newValue } }
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = Modifier.width(IntrinsicSize.Max).widthIn(0.dp, 500.dp).fillMaxHeight()
+    ) {
+        Column(
+            Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SongDetailImage()
+            SongTextField(song.songName, label = "Title") { newValue ->
+                songsViewModel.editSong {
+                    it.songName = newValue
+                }
+            }
+            SongTextField(song.artist, label = "Artist") { newValue ->
+                songsViewModel.editSong {
+                    it.artist = newValue
+                }
+            }
+            SongTextField(song.album, label = "Album") { newValue -> songsViewModel.editSong { it.album = newValue } }
+            SongTextField(song.genre, label = "Genre") { newValue -> songsViewModel.editSong { it.genre = newValue } }
+            SongCoverField(song.coverArt)
+            TextField(
+                readOnly = true,
+                value = song.sourceSongName,
+                onValueChange = { },
+                label = { Text("File") },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }

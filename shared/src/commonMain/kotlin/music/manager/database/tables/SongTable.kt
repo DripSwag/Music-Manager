@@ -10,6 +10,7 @@ object SongTable : Table("song") {
     val genre = varchar("genre", length = 128).default("")
     val artist = varchar("artist", length = 256).default("")
     val album = varchar("album", length = 256).default("")
+    val coverArt = varchar("cover_art", length = 1024).nullable().default(null)
 
     override val primaryKey = PrimaryKey(sourceSongName)
 }

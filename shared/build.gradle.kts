@@ -21,6 +21,7 @@ kotlin {
             implementation(libs.exposed.core)
             implementation(libs.exposed.jdbc)
             implementation(libs.h2)
+
             implementation("org.xerial:sqlite-jdbc:3.50.2.0")
 
             implementation("io.github.vinceglb:filekit-core:0.14.2")
@@ -28,8 +29,8 @@ kotlin {
             implementation("io.github.vinceglb:filekit-dialogs-compose:0.14.2")
             implementation("io.github.vinceglb:filekit-coil:0.14.2")
 
-            implementation("com.drewnoakes:metadata-extractor:2.21.0")
-            implementation("net.sf.javamusictag:jid3lib:0.5.4")
+            implementation("com.github.Anrimian.jaudiotagger-kt:jaudiotagger-kt:3.0.2-kt")
+            implementation("sh.calvin.reorderable:reorderable:3.1.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
