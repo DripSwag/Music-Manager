@@ -5,16 +5,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import music.manager.classes.Song
-import music.manager.database.tables.SongTable
 import music.manager.database.updateDBSong
+import music.manager.enum.SongSortingComparator
 import music.manager.lib.getSongsData
-import org.jetbrains.exposed.v1.core.eq
-import org.jetbrains.exposed.v1.jdbc.update
+
+val INITIAL_SORTING_COMPARATOR = SongSortingComparator.TITLE_ASCENDING
 
 data class SongsState(
-    val songs: ArrayList<Song> = getSongsData(),
+    val songs: ArrayList<Song> = sortList(getSongsData(), INITIAL_SORTING_COMPARATOR),
     var editingSongIndex: Int = -1,
-    var editing: Boolean = false
+    var editing: Boolean = false,
+    var sortingComparator: SongSortingComparator = INITIAL_SORTING_COMPARATOR,
 )
 
 class SongsViewModel : ViewModel() {
@@ -22,7 +23,7 @@ class SongsViewModel : ViewModel() {
         field = MutableStateFlow(SongsState())
 
     fun setSongs(songs: ArrayList<Song>) {
-        uiState.update { it.copy(songs = songs) }
+        uiState.update { it.copy(songs = sortList(songs, it.sortingComparator)) }
     }
 
     fun setEditingSong(index: Int) {
@@ -55,4 +56,14 @@ class SongsViewModel : ViewModel() {
 
         return newList
     }
+
+    fun sortSongs(comparator: SongSortingComparator) {
+        uiState.update { it.copy(sortingComparator = comparator, songs = sortList(uiState.value.songs, comparator)) }
+    }
+
+}
+
+private fun sortList(list: ArrayList<Song>, comparator: SongSortingComparator): ArrayList<Song> {
+    val newList = ArrayList(list.sortedWith(comparator.comparator))
+    return newList
 }

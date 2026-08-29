@@ -2,6 +2,7 @@ package music.manager.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.backgroundDark
+import music.manager.classes.Song
+import music.manager.enum.SongSortingComparator
+import music.manager.ui.btn.SortSongBTN
 import music.manager.viewmodels.SongsViewModel
+import java.util.Comparator
 
 /**
  * Displays all songs in selected input directory
@@ -38,9 +43,12 @@ fun SongList(viewModel: SongsViewModel = viewModel { SongsViewModel() }) {
         modifier = Modifier.fillMaxHeight().fillMaxWidth()
     ) {
         if (uiState.songs.isNotEmpty()) {
-            LazyColumn(Modifier.padding(12.dp)) {
-                items(uiState.songs.size) { index ->
-                    SongEntry(index)
+            Column(Modifier.padding(12.dp)) {
+                Filters()
+                LazyColumn {
+                    items(uiState.songs.size) { index ->
+                        SongEntry(index)
+                    }
                 }
             }
         } else {
@@ -50,7 +58,7 @@ fun SongList(viewModel: SongsViewModel = viewModel { SongsViewModel() }) {
 }
 
 @Composable
-fun NoSongsFound() {
+private fun NoSongsFound() {
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,5 +66,21 @@ fun NoSongsFound() {
     ) {
         Text("No Songs Found!", fontWeight = FontWeight.Bold, fontSize = 64.sp)
         Text("Add songs to the source folder and refresh the list", fontSize = 24.sp)
+    }
+}
+
+@Composable
+private fun Filters() {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        SortSongBTN(
+            "Title",
+            SongSortingComparator.TITLE_ASCENDING,
+            SongSortingComparator.TITLE_DESCENDING
+        )
+        SortSongBTN(
+            "Artist",
+            SongSortingComparator.ARTIST_ASCENDING,
+            SongSortingComparator.ARTIST_DESCENDING
+        )
     }
 }

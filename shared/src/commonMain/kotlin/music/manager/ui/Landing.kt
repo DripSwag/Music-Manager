@@ -43,8 +43,11 @@ fun Landing(
 ) {
     val uiState by songsViewModel.uiState.collectAsState()
 
-    Scaffold(bottomBar = { Footer() }) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(32.dp, 16.dp)) {
+    Scaffold(bottomBar = { Footer() }) { innerPadding ->
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(32.dp, 16.dp).padding(innerPadding)
+        ) {
             if (uiState.editing) {
                 SongDetail()
             }
