@@ -11,6 +11,7 @@ import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -47,8 +48,13 @@ fun SongList(viewModel: SongsViewModel = viewModel { SongsViewModel() }) {
         modifier = Modifier.fillMaxHeight().fillMaxWidth().clip(RoundedCornerShape(8.dp))
     ) {
         if (uiState.songs.isNotEmpty()) {
-            Column(Modifier.padding(12.dp)) {
+            Column(Modifier.padding(24.dp, 12.dp)) {
                 Filters()
+                HorizontalDivider(
+                    Modifier.clip(RoundedCornerShape(8.dp)).padding(0.dp, 16.dp),
+                    thickness = 2.dp,
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh
+                )
                 LazyColumn {
                     items(uiState.songs.size) { index ->
                         SongEntry(index)
