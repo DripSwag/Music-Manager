@@ -44,18 +44,21 @@ fun SongDetail(songsViewModel: SongsViewModel = viewModel { SongsViewModel() }) 
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SongDetailImage()
-            SongTextField(song.songName, label = "Title") { newValue ->
-                songsViewModel.editSong {
-                    it.songName = newValue
-                }
-            }
-            SongTextField(song.artist, label = "Artist") { newValue ->
-                songsViewModel.editSong {
-                    it.artist = newValue
-                }
-            }
-            SongTextField(song.album, label = "Album") { newValue -> songsViewModel.editSong { it.album = newValue } }
-            SongTextField(song.genre, label = "Genre") { newValue -> songsViewModel.editSong { it.genre = newValue } }
+            SongTextField(
+                song.songName,
+                label = "Title",
+                onValueChange = { newValue, song -> song.songName = newValue })
+            SongTextFieldDropdown(
+                song.artist,
+                label = "Artist",
+                filter = { it.artist },
+                onValueChange = { newValue, song -> song.artist = newValue })
+            SongTextFieldDropdown(
+                song.album,
+                label = "Album",
+                filter = { it.album },
+                onValueChange = { newValue, song -> song.album = newValue })
+            SongTextField(song.genre, label = "Genre", onValueChange = { newValue, song -> song.genre = newValue })
             SongCoverField(song.coverArt)
             TextField(
                 readOnly = true,
