@@ -23,16 +23,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
+import io.github.vinceglb.filekit.path
 import music.manager.lib.PropertyHelpers
 import music.manager.lib.readTagProperty
 import music.manager.ui.ExportPathList
-import music.manager.ui.btn.SelectSongsOutputBTN
-import music.manager.ui.btn.SelectSongsSourceBTN
+import music.manager.ui.FileTextField
 import music.manager.viewmodels.SettingsViewModel
 
 @Composable
 fun SettingsModal(settingsViewModel: SettingsViewModel = viewModel { SettingsViewModel() }) {
     val settingsState by settingsViewModel.settingsState.collectAsState()
+
+    val sourceSongsLauncher = rememberDirectoryPickerLauncher { file ->
+        settingsViewModel.setSourceDirectory(file?.path ?: "")
+    }
+    val outputSongsLauncher = rememberDirectoryPickerLauncher { file ->
+        settingsViewModel.setOutputDirectory(file?.path ?: "")
+    }
 
     Dialog(
         onDismissRequest = { settingsViewModel.open() }
@@ -41,25 +49,10 @@ fun SettingsModal(settingsViewModel: SettingsViewModel = viewModel { SettingsVie
             shape = RoundedCornerShape(16.dp)
         ) {
             Column(modifier = Modifier.padding(32.dp), verticalArrangement = Arrangement.spacedBy(32.dp)) {
-                DirectoryInput(settingsState.sourceDirectory, "Source Folder") { SelectSongsSourceBTN() }
-                DirectoryInput(settingsState.outputDirectory, "Export Folder") { SelectSongsOutputBTN() }
+                FileTextField(sourceSongsLauncher, settingsState.sourceDirectory, "Source Folder")
+                FileTextField(outputSongsLauncher, settingsState.outputDirectory, "Export Folder")
                 ExportPathList()
             }
         }
-    }
-}
-
-@Composable
-fun DirectoryInput(value: String, placeholder: String, child: @Composable () -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-        child()
-        TextField(
-            readOnly = true,
-            value = value,
-            onValueChange = {},
-            label = {
-                Text(placeholder)
-            }
-        )
     }
 }

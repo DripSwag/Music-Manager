@@ -25,14 +25,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
+import io.github.vinceglb.filekit.path
 import music.manager.classes.Song
-import music.manager.ui.btn.SongCoverArtBTN
 import music.manager.viewmodels.SongsViewModel
 
 @Composable
 fun SongDetail(songsViewModel: SongsViewModel = viewModel { SongsViewModel() }) {
     val uiState by songsViewModel.uiState.collectAsState()
     val song = uiState.songs[uiState.editingSongIndex]
+
+    val launcher = rememberFilePickerLauncher {
+        songsViewModel.editSong { song -> song.coverArt = it }
+    }
 
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainer,
@@ -60,7 +65,7 @@ fun SongDetail(songsViewModel: SongsViewModel = viewModel { SongsViewModel() }) 
                 filter = { it.album },
                 onValueChange = { newValue, song -> song.album = newValue })
             SongTextField(song.genre, label = "Genre", onValueChange = { newValue, song -> song.genre = newValue })
-            SongCoverField(song.coverArt)
+            FileTextField(launcher, song.coverArt?.path ?: "", "Cover Art")
             TextField(
                 readOnly = true,
                 value = song.sourceSongName,
