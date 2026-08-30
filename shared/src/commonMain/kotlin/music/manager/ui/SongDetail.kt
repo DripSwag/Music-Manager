@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -43,7 +44,7 @@ fun SongDetail(songsViewModel: SongsViewModel = viewModel { SongsViewModel() }) 
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SongDetailImage()
+            SongArtworkImage(song, Modifier.aspectRatio(1.0f).fillMaxWidth().clip(RoundedCornerShape(8.dp)))
             SongTextField(
                 song.songName,
                 label = "Title",

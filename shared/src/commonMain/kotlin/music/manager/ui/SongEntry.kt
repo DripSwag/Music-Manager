@@ -56,12 +56,7 @@ fun SongEntry(index: Int, songsViewModel: SongsViewModel = viewModel { SongsView
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AsyncImage(
-            model = song.coverArtBytes,
-            contentDescription = "",
-            modifier = Modifier.size(80.dp).clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop,
-        )
+        SongArtworkImage(song, Modifier.size(80.dp).clip(RoundedCornerShape(8.dp)), false)
         Column() {
             Text(song.songName, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
             Text(
