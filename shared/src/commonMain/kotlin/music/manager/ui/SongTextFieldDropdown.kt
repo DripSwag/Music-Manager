@@ -89,8 +89,7 @@ private fun songsContainingInput(
     val distinctValues = otherSongs.map(filter).distinct()
 
     return distinctValues.filter {
-        it.lowercase().contains(editingSongValue.lowercase())
-        it != ""
+        it.lowercase().contains(editingSongValue.lowercase()) &&
+                it != ""
     }.sortedWith(compareBy { it.lowercase() })
-
 }
