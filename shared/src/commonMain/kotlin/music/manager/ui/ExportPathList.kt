@@ -67,7 +67,9 @@ fun ExportPathList(settingsViewModel: SettingsViewModel = viewModel { SettingsVi
                         )
                         Text(it.property.toString())
                     }
-                    IconButton(onClick = {}) {
+                    IconButton(
+                        modifier = Modifier.draggableHandle().size(24.dp),
+                        onClick = {}) {
                         Image(
                             painterResource(Res.drawable.drag),
                             "Drag",
