@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.lifecycle.viewmodel.compose.viewModel
 import music.manager.enum.SongProperties
 import music.manager.lib.exportSongs
@@ -21,7 +24,10 @@ fun ExportSongsBTN(
     val uiState by songsViewModel.uiState.collectAsState()
     val settingsState by settingsViewModel.settingsState.collectAsState()
 
-    Button(onClick = { exportSongs(uiState.songs, settingsState.properties) }) {
+    Button(
+        onClick = { exportSongs(uiState.songs, settingsState.properties) },
+        modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+    ) {
         Text("Export")
     }
 }

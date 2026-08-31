@@ -24,6 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -65,7 +67,7 @@ fun ExportPathList(settingsViewModel: SettingsViewModel = viewModel { SettingsVi
                         )
                         Text(it.property.toString())
                     }
-                    IconButton(modifier = Modifier.draggableHandle().size(24.dp), onClick = {}) {
+                    IconButton(onClick = {}) {
                         Image(
                             painterResource(Res.drawable.drag),
                             "Drag",

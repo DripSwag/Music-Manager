@@ -16,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,7 +43,7 @@ fun Footer(settingsViewModel: SettingsViewModel = viewModel { SettingsViewModel(
         actions = {
             ExportSongsBTN()
             RefreshSongsBTN()
-            IconButton(onClick = { settingsViewModel.open() }) {
+            IconButton(onClick = { settingsViewModel.open() }, modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)) {
                 Image(
                     painterResource(Res.drawable.settings),
                     "Settings",

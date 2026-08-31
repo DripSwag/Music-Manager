@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import music.manager.enum.SongSortingComparator
@@ -41,6 +43,7 @@ fun SortSongBTN(
         },
         leadingIcon = { LeadingIcon(ascendingComparator, descendingComparator) },
         selected = songsState.sortingComparator == ascendingComparator || songsState.sortingComparator == descendingComparator,
+        modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
     )
 }
 

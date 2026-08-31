@@ -8,6 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import io.github.vinceglb.filekit.dialogs.compose.PickerResultLauncher
 import musicmanager.shared.generated.resources.Res
 import musicmanager.shared.generated.resources.folder
@@ -21,7 +23,7 @@ fun FileTextField(launcher: PickerResultLauncher, value: String, label: String) 
         onValueChange = {},
         trailingIcon = { FileIconBTN(launcher) },
         modifier = Modifier.fillMaxWidth(),
-        readOnly = true
+        readOnly = true,
     )
 }
 
@@ -31,7 +33,7 @@ private fun FileIconBTN(launcher: PickerResultLauncher) {
         Icon(
             painter = painterResource(Res.drawable.folder),
             contentDescription = "Pick File",
-            modifier = Modifier.fillMaxWidth(0.7f).aspectRatio(1f)
+            modifier = Modifier.fillMaxWidth(0.7f).aspectRatio(1f).pointerHoverIcon(PointerIcon.Hand)
         )
     }
 }

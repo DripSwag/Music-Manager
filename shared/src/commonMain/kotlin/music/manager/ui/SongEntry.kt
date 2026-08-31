@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +50,7 @@ fun SongEntry(index: Int, songsViewModel: SongsViewModel = viewModel { SongsView
         if (uiState.editingSongIndex == index && uiState.editing) MaterialTheme.colorScheme.surfaceContainerHighest else Color.Transparent
 
     Row(
-        modifier = Modifier.clip(RoundedCornerShape(8.dp))
+        modifier = Modifier.clip(RoundedCornerShape(8.dp)).pointerHoverIcon(PointerIcon.Hand)
             .background(color)
             .clickable {
                 handleClick(songsViewModel, index)
