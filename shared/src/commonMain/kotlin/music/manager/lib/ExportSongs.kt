@@ -4,6 +4,8 @@ import io.github.vinceglb.filekit.path
 import io.github.vinceglb.filekit.utils.toFile
 import kotlinx.io.files.Path
 import music.manager.classes.Song
+import music.manager.classes.getProperty
+import music.manager.enum.SettingsProperty
 import music.manager.enum.SongProperties
 import music.manager.viewmodels.SettingsPropertyEntry
 import org.jaudiotagger.kt.AudioTagger
@@ -17,8 +19,8 @@ import java.util.LinkedList
 import kotlin.io.path.pathString
 
 fun exportSongs(songs: List<Song>, propertyOrder: List<SettingsPropertyEntry>) {
-    val baseOutputDirectory = PropertyHelpers.readProperty("songsOutputDirectory")
-    val baseSourceDirectory = PropertyHelpers.readProperty("songsSourceDirectory")
+    val baseOutputDirectory = getProperty(SettingsProperty.OUTPUT_DIRECTORY_PROPERTY.propertyName)
+    val baseSourceDirectory = getProperty(SettingsProperty.SOURCE_DIRECTORY_PROPERTY.propertyName)
 
     for (song in songs) {
         val sourceFile = File(baseSourceDirectory + "/${song.sourceSongName}")

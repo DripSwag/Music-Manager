@@ -1,12 +1,16 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.sqldelight)
 }
+
 
 kotlin {
     jvm()
-
 
     sourceSets {
         commonMain.dependencies {
@@ -18,22 +22,28 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(libs.exposed.core)
-            implementation(libs.exposed.jdbc)
-            implementation(libs.h2)
 
-            implementation("org.xerial:sqlite-jdbc:3.50.2.0")
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.dialogs)
+            implementation(libs.filekit.dialogs.compose)
+            implementation(libs.filekit.coil)
 
-            implementation("io.github.vinceglb:filekit-core:0.14.2")
-            implementation("io.github.vinceglb:filekit-dialogs:0.14.2")
-            implementation("io.github.vinceglb:filekit-dialogs-compose:0.14.2")
-            implementation("io.github.vinceglb:filekit-coil:0.14.2")
-
-            implementation("com.github.Anrimian.jaudiotagger-kt:jaudiotagger-kt:3.0.2-kt")
-            implementation("sh.calvin.reorderable:reorderable:3.1.0")
+            implementation(libs.jaudiotagger)
+            implementation(libs.reorderable)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        jvmMain.dependencies {
+            implementation(libs.sqlite.driver)
+        }
+    }
+
+    sqldelight {
+        databases {
+            create("Database") {
+                packageName = "dev.database"
+            }
         }
     }
 }

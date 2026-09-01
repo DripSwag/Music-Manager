@@ -1,0 +1,29 @@
+CREATE TABLE song(
+    source_song_name TEXT PRIMARY KEY NOT NULL,
+    song_name TEXT NOT NULL,
+    genre TEXT NOT NULL DEFAULT '',
+    artist TEXT NOT NULL DEFAULT '',
+    album TEXT NOT NULL DEFAULT '',
+    cover_art TEXT DEFAULT NULL
+);
+
+insert:
+INSERT INTO song(source_song_name, song_name, genre, artist, album, cover_art)
+VALUES (?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE song
+SET song_name = ?,
+    genre = ?,
+    artist = ?,
+    album = ?,
+    cover_art = ?
+WHERE source_song_name = :source_song_name;
+
+get:
+SELECT *
+FROM song
+WHERE ? = song.source_song_name;
+
+search:
+SELECT EXISTS (SELECT * FROM song WHERE source_song_name = ?);

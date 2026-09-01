@@ -2,14 +2,9 @@ package music.manager.lib
 
 import kotlinx.io.files.Path
 import music.manager.classes.Song
-import music.manager.database.tables.SongTable
 import org.jaudiotagger.kt.AudioTagger
 import org.jaudiotagger.kt.tag.FieldKey
 import org.jaudiotagger.kt.tag.Tag
-import org.jetbrains.exposed.v1.core.eq
-import org.jetbrains.exposed.v1.jdbc.exists
-import org.jetbrains.exposed.v1.jdbc.select
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import java.io.File
 
 fun readAllSourceSongs(directory: File): ArrayList<Song> {

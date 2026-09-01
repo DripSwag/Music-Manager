@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import music.manager.classes.Database
 import music.manager.classes.Song
-import music.manager.database.updateDBSong
 import music.manager.enum.SongSortingComparator
 import music.manager.lib.getSongsData
 
@@ -41,7 +41,7 @@ class SongsViewModel : ViewModel() {
         val songCopy = value.songs[value.editingSongIndex].copy()
         editSong(songCopy)
 
-        updateDBSong(songCopy)
+        Database.updateSong(songCopy)
 
         val newList = ArrayList<Song>()
         for (index in uiState.value.songs.indices) {

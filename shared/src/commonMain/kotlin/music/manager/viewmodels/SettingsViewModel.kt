@@ -4,12 +4,11 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import music.manager.classes.getProperty
+import music.manager.classes.writeProperty
+import music.manager.enum.SettingsProperty
 import music.manager.enum.SongProperties
-import music.manager.lib.PropertyHelpers
-import music.manager.lib.PropertyHelpers.Companion.writeProperty
 
-const val SOURCE_DIRECTORY_PROPERTY = "songsSourceDirectory"
-const val OUTPUT_DIRECTORY_PROPERTY = "songsOutputDirectory"
 
 data class SettingsPropertyEntry(
     val property: SongProperties,
@@ -23,8 +22,8 @@ data class SettingsState(
         SettingsPropertyEntry(SongProperties.ALBUM),
         SettingsPropertyEntry(SongProperties.GENRE),
     ).toList(),
-    val sourceDirectory: String = PropertyHelpers.readProperty(SOURCE_DIRECTORY_PROPERTY),
-    val outputDirectory: String = PropertyHelpers.readProperty(OUTPUT_DIRECTORY_PROPERTY),
+    val sourceDirectory: String = getProperty(SettingsProperty.SOURCE_DIRECTORY_PROPERTY.propertyName),
+    val outputDirectory: String = getProperty(SettingsProperty.OUTPUT_DIRECTORY_PROPERTY.propertyName),
 )
 
 class SettingsViewModel : ViewModel() {
@@ -61,12 +60,12 @@ class SettingsViewModel : ViewModel() {
     }
 
     fun setSourceDirectory(directory: String) {
-        writeProperty("songsSourceDirectory", directory)
+        writeProperty(SettingsProperty.SOURCE_DIRECTORY_PROPERTY.propertyName, directory)
         settingsState.update { it.copy(sourceDirectory = directory) }
     }
 
     fun setOutputDirectory(directory: String) {
-        writeProperty("songsOutputDirectory", directory)
+        writeProperty(SettingsProperty.OUTPUT_DIRECTORY_PROPERTY.propertyName, directory)
         settingsState.update { it.copy(outputDirectory = directory) }
     }
 

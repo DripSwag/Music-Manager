@@ -2,19 +2,16 @@ package music.manager.lib
 
 import androidx.compose.runtime.Composable
 import io.github.vinceglb.filekit.PlatformFile
+import music.manager.classes.Database
 import music.manager.classes.Song
-import music.manager.database.addDBSong
-import music.manager.database.tables.SongTable
+import music.manager.classes.getProperty
+import music.manager.enum.SettingsProperty
+import music.manager.enum.SongSortingComparator
 import music.manager.viewmodels.SongsViewModel
-import org.jetbrains.exposed.v1.core.eq
-import org.jetbrains.exposed.v1.jdbc.insert
-import org.jetbrains.exposed.v1.jdbc.select
-import org.jetbrains.exposed.v1.jdbc.selectAll
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import java.io.File
 
 fun getSongsData(): ArrayList<Song> {
-    val songsSourceDirectory = File(PropertyHelpers.readProperty("songsSourceDirectory"))
+    val songsSourceDirectory = File(getProperty(SettingsProperty.SOURCE_DIRECTORY_PROPERTY.propertyName))
 
     if (songsSourceDirectory.isDirectory()) {
         val sourceSongs = readAllSourceSongs(songsSourceDirectory)
@@ -28,39 +25,19 @@ fun getSongsData(): ArrayList<Song> {
 
 fun checkSongsWithDatabase(sourceSongs: List<Song>) {
     for (song: Song in sourceSongs) {
-        if (sourceSongExists(song.sourceSongName)) {
+        if (Database.searchSong(song)) {
             getExistingSongData(song)
         } else {
-            addDBSong(song)
+            Database.addSong(song)
         }
     }
 }
 
 fun getExistingSongData(song: Song) {
-    transaction {
-        SongTable.selectAll()
-            .where { SongTable.sourceSongName eq song.sourceSongName }
-            .map {
-                song.songName = it[SongTable.songName]
-                song.genre = it[SongTable.genre]
-                song.album = it[SongTable.album]
-                song.artist = it[SongTable.artist]
-                if (it[SongTable.coverArt] == null) {
-                    song.coverArt = null
-                } else {
-                    song.coverArt = PlatformFile(it[SongTable.coverArt]!!)
-                }
-            }
-    }
-}
-
-
-fun sourceSongExists(songName: String): Boolean {
-    val count = transaction {
-        SongTable.select(SongTable.sourceSongName)
-            .where { SongTable.sourceSongName eq songName }
-            .count()
-    }
-
-    return count > 0
+    val existingData = Database.getSong(song)
+    song.songName = existingData.songName
+    song.artist = existingData.artist
+    song.genre = existingData.genre
+    song.album = existingData.album
+    song.coverArt = existingData.coverArt
 }
