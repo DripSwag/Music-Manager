@@ -6,7 +6,6 @@ import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 import kotlinx.io.readLine
 import kotlinx.io.writeString
-import music.manager.enum.SettingsProperty
 
 const val SETTINGS_FILE_NAME = "settings.properties"
 val PATH = Path(SETTINGS_FILE_NAME)

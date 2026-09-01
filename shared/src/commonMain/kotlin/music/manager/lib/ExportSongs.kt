@@ -1,7 +1,5 @@
 package music.manager.lib
 
-import io.github.vinceglb.filekit.path
-import io.github.vinceglb.filekit.utils.toFile
 import kotlinx.io.files.Path
 import music.manager.classes.Song
 import music.manager.classes.getProperty
@@ -15,8 +13,6 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
-import java.util.LinkedList
-import kotlin.io.path.pathString
 
 fun exportSongs(songs: List<Song>, propertyOrder: List<SettingsPropertyEntry>) {
     val baseOutputDirectory = getProperty(SettingsProperty.OUTPUT_DIRECTORY_PROPERTY.propertyName)

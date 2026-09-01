@@ -3,7 +3,6 @@ package music.manager.classes
 import dev.database.Database
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.path
-import io.github.vinceglb.filekit.utils.toPath
 
 object Database {
     val database: Database = Database(DatabaseDriverFactory().createDriver())

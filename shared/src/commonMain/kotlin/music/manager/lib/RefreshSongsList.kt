@@ -1,13 +1,9 @@
 package music.manager.lib
 
-import androidx.compose.runtime.Composable
-import io.github.vinceglb.filekit.PlatformFile
 import music.manager.classes.Database
 import music.manager.classes.Song
 import music.manager.classes.getProperty
 import music.manager.enum.SettingsProperty
-import music.manager.enum.SongSortingComparator
-import music.manager.viewmodels.SongsViewModel
 import java.io.File
 
 fun getSongsData(): ArrayList<Song> {
