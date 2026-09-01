@@ -7,13 +7,19 @@ import com.example.compose.AppTheme
 import io.github.vinceglb.filekit.FileKit
 
 import music.manager.ui.Landing
+import music.manager.ui.modal.OutputDirectoryErrorModal
 import music.manager.ui.modal.SettingsModal
+import music.manager.viewmodels.ErrorViewModel
 import music.manager.viewmodels.SettingsViewModel
 
 @Composable
 @Preview
-fun App(settingsViewModel: SettingsViewModel = viewModel { SettingsViewModel() }) {
+fun App(
+    settingsViewModel: SettingsViewModel = viewModel { SettingsViewModel() },
+    errorViewModel: ErrorViewModel = viewModel { ErrorViewModel() }
+) {
     val settingsState by settingsViewModel.settingsState.collectAsState()
+    val errorState by errorViewModel.errorState.collectAsState()
 
     onLoad()
 
@@ -22,6 +28,7 @@ fun App(settingsViewModel: SettingsViewModel = viewModel { SettingsViewModel() }
 
         when {
             settingsState.modalVisible -> SettingsModal()
+            errorState.outputDirectory -> OutputDirectoryErrorModal()
         }
     }
 }

@@ -1,5 +1,6 @@
 package music.manager.lib
 
+import io.github.vinceglb.filekit.utils.toFile
 import kotlinx.io.files.Path
 import music.manager.classes.Song
 import music.manager.classes.getProperty
@@ -14,9 +15,13 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
-fun exportSongs(songs: List<Song>, propertyOrder: List<SettingsPropertyEntry>) {
+fun exportSongs(songs: List<Song>, propertyOrder: List<SettingsPropertyEntry>): Boolean {
     val baseOutputDirectory = getProperty(SettingsProperty.OUTPUT_DIRECTORY_PROPERTY.propertyName)
     val baseSourceDirectory = getProperty(SettingsProperty.SOURCE_DIRECTORY_PROPERTY.propertyName)
+
+    if(!validDirectory(baseSourceDirectory) || !validDirectory(baseOutputDirectory)) {
+        return false
+    }
 
     for (song in songs) {
         val sourceFile = File(baseSourceDirectory + "/${song.sourceSongName}")
@@ -36,13 +41,15 @@ fun exportSongs(songs: List<Song>, propertyOrder: List<SettingsPropertyEntry>) {
 
         setTags(Path(targetPath), song)
     }
+
+    return true
 }
 
-fun generateSubDirectories(baseDirectory: String, subDirectory: String) {
+private fun generateSubDirectories(baseDirectory: String, subDirectory: String) {
     Files.createDirectories(Paths.get(baseDirectory + subDirectory))
 }
 
-fun generateSubDirectoryPath(song: Song, propertyOrder: List<SettingsPropertyEntry>): String {
+private fun generateSubDirectoryPath(song: Song, propertyOrder: List<SettingsPropertyEntry>): String {
     var result = ""
 
     for ((property, enabled) in propertyOrder) {
@@ -61,7 +68,7 @@ fun generateSubDirectoryPath(song: Song, propertyOrder: List<SettingsPropertyEnt
     return result
 }
 
-fun setTags(path: Path, song: Song) {
+private fun setTags(path: Path, song: Song) {
     val file = AudioTagger.read(path)
 
     file.tag.set(FieldKey.ALBUM, song.album)
@@ -71,4 +78,9 @@ fun setTags(path: Path, song: Song) {
     }
 
     AudioTagger.write(path, file.tag)
+}
+
+private fun validDirectory(pathString: String): Boolean {
+    val path = Path(pathString)
+    return path.toFile().isDirectory()
 }
