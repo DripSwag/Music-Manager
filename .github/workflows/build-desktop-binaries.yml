@@ -27,7 +27,7 @@ jobs:
           cp 'desktopApp/build/compose/binaries/main/app/Music Manager/bin/Music Manager' upload/
 
       - name: Upload Linux
-        uses: action/upload-artifact@v7
+        uses: actions/upload-artifact@v7
         with:
           name: Music Manager
           path: upload/*
