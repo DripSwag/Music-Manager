@@ -20,7 +20,7 @@ compose.desktop {
         mainClass = "music.manager.MainKt"
 
         nativeDistributions {
-            includeAllModules = true
+            modules("java.sql")
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm, TargetFormat.AppImage)
             packageName = "Music Manager"
             packageVersion = "1.0.0"
