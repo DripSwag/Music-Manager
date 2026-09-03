@@ -24,7 +24,7 @@ jobs:
       - name: Move App Image for Upload
         run: |
           mkdir -p upload
-          cp 'desktopApp/build/compose/binaries/main/app/Music Manager/bin/Music Manager' upload/
+          cp 'desktopApp/build/compose/binaries/main/app/Music Manager' upload/
 
       - name: Upload Linux
         uses: actions/upload-artifact@v7
