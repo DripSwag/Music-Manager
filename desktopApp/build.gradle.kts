@@ -21,7 +21,14 @@ compose.desktop {
 
         nativeDistributions {
             modules("java.sql")
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm, TargetFormat.AppImage)
+            targetFormats(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                TargetFormat.Deb,
+                TargetFormat.Rpm,
+                TargetFormat.AppImage,
+                TargetFormat.Exe
+            )
             packageName = "Music Manager"
             packageVersion = "1.0.0"
 
