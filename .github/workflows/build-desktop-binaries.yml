@@ -41,4 +41,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: Music Manager.msi
-          path: upload/*
+          path: upload/*.msi
+          archive: false
