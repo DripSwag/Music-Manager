@@ -22,7 +22,7 @@ compose.desktop {
         nativeDistributions {
             includeAllModules = true
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm, TargetFormat.AppImage)
-            packageName = "music.manager"
+            packageName = "Music Manager"
             packageVersion = "1.0.0"
 
             linux {
